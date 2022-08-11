@@ -9,9 +9,9 @@ int main(int argc, char const *argv[])
 	}
 
 	while ((c = getchar()) != EOF) {
-		if (c >= 'a' || c <= 'z') {
+		if (c >= 'a' && c <= 'z') {
 			++chr[c - 'a'];
-		} else if (c >= 'A' || c <= 'Z') {
+		} else if (c >= 'A' && c <= 'Z') {
 			++chr[c - 'A'];
 		}
 	}
