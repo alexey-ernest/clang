@@ -8,6 +8,8 @@ enum escape { ESCAPED, NOTESCAPED };
 
 enum pairs mapchar(char c, char pc);
 
+/* check for balance braces, paranthesis, quotes
+   and comments */
 int main(int argc, char const *argv[])
 {
 	enum pairs open_pair[PAIRS_NUM]		= {LCB, LP, LSB, Q, DQ, LC, LMC};
@@ -92,20 +94,10 @@ int main(int argc, char const *argv[])
 		}
 
 		pc = c;
-
-		printf("stack: ");
-		for (j = 0; j < i; ++j) {
-			printf("%d ", stack[j]);
-		}
-		printf(" at line %d\n", nline);
 	}
 
 	if (i > 0) {
-		printf("unbalanced symbol: %d, stack: ", stack[i-1]);
-		for (j = 0; j < i; ++j) {
-			printf("%d ", stack[j]);
-		}
-		printf("\n");
+		printf("unbalanced symbol: %d\n", stack[i-1]);
 		return 1;
 	}
 
