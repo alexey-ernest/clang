@@ -28,7 +28,7 @@ int atoi(char s[]) {
 	i = 0;
 	negative = 0;
 
-	if (s[i] == '-') {
+	if (s[0] == '-') {
 		negative = 1;
 		i = 1;
 	}
