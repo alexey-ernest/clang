@@ -20,14 +20,22 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
-/* atoi: convert s to integer, a naive implementation */
+/* atoi: convert s to integer */
 int atoi(char s[]) {
-	int i, n;
+	int i, n, negative;
 
 	n = 0;
-	for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i) {
+	i = 0;
+	negative = 0;
+
+	if (s[i] == '-') {
+		negative = 1;
+		i = 1;
+	}
+
+	for (; s[i] >= '0' && s[i] <= '9'; ++i) {
 		n = 10 * n + (s[i] - '0');
 	}
 
-	return n;
+	return negative ? -n : n;
 }
