@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 
 #define MAX_INPUT 20
 
@@ -22,20 +23,22 @@ int main(int argc, char const *argv[])
 
 /* atoi: convert s to integer */
 int atoi(char s[]) {
-	int i, n, negative;
+	int i, n, sign;
 
 	n = 0;
-	i = 0;
-	negative = 0;
 
-	if (s[0] == '-') {
-		negative = 1;
-		i = 1;
+	// skip whitespaces
+	for (i = 0; isspace(s[i]); ++i) {}
+
+	// skip sign
+	sign = s[i] == '-' ? -1 : 1;
+	if (s[i] == '-' || s[i] == '+') {
+		++i;
 	}
 
 	for (; s[i] >= '0' && s[i] <= '9'; ++i) {
 		n = 10 * n + (s[i] - '0');
 	}
 
-	return negative ? -n : n;
+	return sign * n;
 }
