@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
-#define MAXLEN 100
+#define MAXLEN 12
 
 void itoa(int n, char s[]);
 void reverse(char s[]);
@@ -17,29 +17,37 @@ int main(int argc, char const *argv[])
 	itoa(-5768492, s);
 	assert(strcmp(s, "-5768492") == 0);
 
+	itoa(-1, s);
+	assert(strcmp(s, "-1") == 0);
+
 	itoa(0, s);
 	assert(strcmp(s, "0") == 0);
 
 	itoa(1843273840, s);
 	assert(strcmp(s, "1843273840") == 0);
 
+	// minimum integer value
+	itoa(1 << 31, s);
+	assert(strcmp(s, "-2147483648") == 0);
+
 	return 0;
 }
 
 /* itoa: convert an integer to characters in s */
 void itoa(int n, char s[]) {
-	int i, sign;
+	int i, sign, r;
 	
 	i = 0;
 	sign = n;
-	if (n < 0) {
-		n = -n;
-	}
 
 	do {
-		s[i++] = n%10 + '0';
+		r = n%10;
+		if (r < 0) {
+			r = -r;
+		}
+		s[i++] = r + '0';
 		n = n/10;
-	} while (n > 0);
+	} while (n != 0);
 
 	if (sign < 0) {
 		s[i++] = '-';
