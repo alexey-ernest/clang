@@ -2,8 +2,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#define MAX_LEN 100000
-#define MAX_INT_DIGITS 8
+#define MAX_LEN 1000000
+#define MAX_INT_DIGITS 11
 
 void shellsort(int arr[], int n);
 
