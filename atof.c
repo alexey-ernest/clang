@@ -17,6 +17,7 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
+/* atof: convert a character string s to double */
 double atof(char s[]) {
 	double val, pow;
 	int i, sign;
