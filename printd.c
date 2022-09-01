@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
 	s[i] = '\0';
 
 	printd(atoi(s));
-	printf("\n");
+	putchar('\n');
 
 	return 0;
 }
