@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#define MAXGETCHBUF 100
+#define MAXGETCHBUF 10
 
 int getint(int *);
 
@@ -9,7 +9,9 @@ int main(int argc, char const *argv[])
 {
 	int c, i;
 	while((c = getint(&i)) != EOF) {
-		printf("%d ", i);
+		if (c != 0) {
+			printf("%d ", i);	
+		}
 	}
 	putchar('\n');
 
@@ -37,6 +39,15 @@ int getint(int *pn) {
 
 	for (val = 0; isdigit(c); c = getch()) {
 		val = val * 10 + (c - '0');
+	}
+
+	if (c != EOF && val == 0) {
+		while (!isspace(c)) {
+			c = getch();
+		}
+
+		// not a number
+		return 0;
 	}
 
 	*pn = val * sign;
