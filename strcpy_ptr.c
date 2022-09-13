@@ -1,13 +1,13 @@
 #include <assert.h>
 
-void strcpy_ptr(char *s, char *t);
+void strcpy_ptr(char *t, char *s);
 
 int main(int argc, char const *argv[])
 {
 	char s1[] = "abcd";
 	char s2[] = "defghi";
 
-	strcpy_ptr(s1, s2);
+	strcpy_ptr(s2, s1);
 	assert(s2[0] == 'a');
 	assert(s2[1] == 'b');
 	assert(s2[2] == 'c');
@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
-void strcpy_ptr(char *s, char *t) {
+void strcpy_ptr(char *t, char *s) {
 	while ((*t++ = *s++))
 		;
 }
