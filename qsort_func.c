@@ -7,14 +7,14 @@
 char *vals[MAXVALS];
 
 int readvals(char **vals, int max);
-void qsort_f(void **arr, int l, int r, int (*comp)(void *, void *));
+void qsort_f(void **arr, int l, int r, int (*comp)(void *, void *), int);
 void printvals(char **vals, int n);
 int numcmp(const char *, const char *);
 
 int main(int argc, char const *argv[])
 {
 	int nvals;
-	int numeric = 0;
+	int numeric = 0, order = 1;
 	int c;
 
 	while (--argc && (*++argv)[0] == '-') {
@@ -22,6 +22,9 @@ int main(int argc, char const *argv[])
 			switch (c) {
 				case 'n':
 					numeric = 1;
+					break;
+				case 'r':
+					order = -1;
 					break;
 				default:
 					printf("unknown options %c\n", c);
@@ -37,7 +40,7 @@ int main(int argc, char const *argv[])
 	}
 
 	if ((nvals = readvals(vals, MAXVALS)) > 0) {
-		qsort_f((void **)vals, 0, nvals-1, (int (*)(void *, void *))(numeric ? numcmp : strcmp));
+		qsort_f((void **)vals, 0, nvals-1, (int (*)(void *, void *))(numeric ? numcmp : strcmp), order);
 		printvals(vals, nvals);
 	} else {
 		printf("error: no input or input is too big");
@@ -56,7 +59,7 @@ int numcmp(const char *s1, const char *s2) {
 
 #define SWAP(t, x, y) { t tmp; tmp = x; x = y; y = tmp; }
 
-void qsort_f(void **arr, int l, int r, int (*comp)(void *, void *)) {
+void qsort_f(void **arr, int l, int r, int (*comp)(void *, void *), int order) {
 	int last, i;
 	if (l >= r) {
 		return;
@@ -64,14 +67,14 @@ void qsort_f(void **arr, int l, int r, int (*comp)(void *, void *)) {
 
 	SWAP(void *, arr[l], arr[(l + r) / 2]);
 	for (last = l, i = l + 1; i <= r; ++i) {
-		if (comp(arr[i], arr[l]) < 0) {
+		if (comp(arr[i], arr[l]) * order < 0) {
 			++last;
 			SWAP(void *, arr[i], arr[last]);
 		}
 	}
 	SWAP(void *, arr[l], arr[last]);
-	qsort_f(arr, l, last - 1, comp);
-	qsort_f(arr, last + 1, r, comp);
+	qsort_f(arr, l, last - 1, comp, order);
+	qsort_f(arr, last + 1, r, comp, order);
 }
 
 void printvals(char **vals, int n) {
