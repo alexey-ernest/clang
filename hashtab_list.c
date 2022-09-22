@@ -16,6 +16,7 @@ static struct nlist *hashtab[HASHSIZE];
 unsigned hash(char *);
 struct nlist *lookup(char *);
 struct nlist *install(char *, char *);
+struct nlist *undef(char *);
 
 int main(int argc, char const *argv[])
 {
@@ -23,6 +24,9 @@ int main(int argc, char const *argv[])
 	assert(install("abc", "def") != NULL);
 	assert(lookup("abc") != NULL);
 	assert(strcmp(lookup("abc")->defn, "def") == 0);
+	assert(undef("abc") != NULL);
+	assert(lookup("abc") == NULL);
+
 	assert(lookup("def") == NULL);
 	assert(install("ddd", "eee") != NULL);
 	assert(lookup("ddd") != NULL);
@@ -55,8 +59,7 @@ struct nlist *install(char *name, char *defn) {
 	char *sdup(char *);
 	struct nlist *p;
 
-	p = lookup(name);
-	if (p != NULL) {
+	if ((p = lookup(name)) != NULL) {
 		// replace defn
 		free((void *) p->defn);
 		if ((p->defn = sdup(defn)) == NULL) {
@@ -74,6 +77,27 @@ struct nlist *install(char *name, char *defn) {
 	}
 
 	return p;
+}
+
+struct nlist *undef(char *s) {
+	struct nlist *p;
+	struct nlist *prevp = NULL;
+
+	for (p = hashtab[hash(s)]; p != NULL; p = p->next) {
+		if (strcmp(s, p->name) == 0) {
+			if (prevp != NULL) {
+				prevp->next = p->next;
+			} else {
+				// head
+				hashtab[hash(s)] = p->next;
+			}
+			p->next = NULL;
+			return p;
+		}
+		prevp = p;
+	}
+
+	return NULL;
 }
 
 char *sdup(char *s) {
