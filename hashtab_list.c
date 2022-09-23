@@ -24,6 +24,9 @@ int main(int argc, char const *argv[])
 	assert(install("abc", "def") != NULL);
 	assert(lookup("abc") != NULL);
 	assert(strcmp(lookup("abc")->defn, "def") == 0);
+	assert(install("abc", "ggg") != NULL);
+	assert(strcmp(lookup("abc")->defn, "ggg") == 0);
+	
 	assert(undef("abc") != NULL);
 	assert(lookup("abc") == NULL);
 
