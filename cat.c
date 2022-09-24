@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 /* cat: concatenate files */
 int main(int argc, char const *argv[])
 {
 	FILE *fp;
 	void filecopy(FILE *, FILE *);
+	const char *prog = argv[0];
 
 	if (argc == 1) {
 		filecopy(stdin, stdout);
@@ -14,12 +16,18 @@ int main(int argc, char const *argv[])
 				filecopy(fp, stdout);
 				fclose(fp);
 			} else {
-				fprintf(stdout, "error: could not open file %s\n", *argv);
+				fprintf(stderr, "%s: could not open file %s\n", prog, *argv);
+				exit(1); // close all opened files
 			}
 		}
 	}
 
-	return 0;
+	if (ferror(stdout)) {
+		fprintf(stderr, "%s: error writing stdout\n", prog);
+		exit(2);
+	}
+
+	exit(0);
 }
 
 void filecopy(FILE *ifp, FILE *ofp) {
